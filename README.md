@@ -16,6 +16,13 @@ npm create svelte@latest my-app
 
 ## Developing
 
+First, fill out the `.env` file by copying the existing `.env.example`
+
+```bash
+cp .env.example .env 
+# then update the contents with your local values
+```
+
 Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
 ```bash
