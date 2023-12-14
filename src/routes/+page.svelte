@@ -1,7 +1,14 @@
 <script>
   export let data;
+  import { AppBar, AppShell } from '@skeletonlabs/skeleton';
 </script>
 
-<h1>Welcome to solomon</h1>
+
+<AppBar gridColumns="grid-cols-3" slotDefault="place-self-center" slotTrail="place-content-end">
+	<svelte:fragment slot="lead">(icon)</svelte:fragment>
+	(title)
+	<svelte:fragment slot="trail">(actions)</svelte:fragment>
+</AppBar>
+
+
 <pre>{JSON.stringify(data.thing1, null, 2)}</pre>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
