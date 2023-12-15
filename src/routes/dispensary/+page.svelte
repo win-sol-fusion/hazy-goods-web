@@ -13,7 +13,7 @@
     <input type="search" placeholder="Search dispensaries..." />
     <button class="variant-filled-secondary">Search</button>
 </div>
-{#each data.dispensariesPromise.data || [] as dispensary}
+{#each data.dispensariesQuery.data || [] as dispensary}
     <div class="card">
         <header class="card-header">
             {dispensary.name}
