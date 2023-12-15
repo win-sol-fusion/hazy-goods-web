@@ -21,15 +21,10 @@ export const actions = {
             city: formCity,
             region_id: formState,
             postal_code: formZip,
-            validation_status_id: formStatus,
-            created_by: formCreatedBy
+            validation_status_id: 2, //pending
+            created_by: "22222222-2222-2222-2222-222222222222", // placeholder user id
           },
         ]);
-
-      if (error) {
-        console.error("Error inserting data into supabase:", error.message);
-        return { success: false, error: "Failed to insert data into Supabase" };
-      }
       return { success: true, data: insertData };
     } catch (error) {
       console.error("Error processing form submission:", error.message);
