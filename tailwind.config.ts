@@ -1,7 +1,6 @@
 import { join } from 'path'
 import type { Config } from 'tailwindcss'
-
-// 1. Import the Skeleton plugin
+import forms from '@tailwindcss/forms'
 import { skeleton } from '@skeletonlabs/tw-plugin'
 
 const config = {
@@ -19,7 +18,8 @@ const config = {
         extend: {},
     },
     plugins: [
-        // 4. Append the Skeleton plugin (after other plugins)
+        forms,
+        // According to the Skeleton docs, the Skeleton plugin should be last
         skeleton({
             themes: { preset: ['vintage'] },
         }),

@@ -1,8 +1,8 @@
 import supabase from '$lib/supabase/client'
+import type { Load } from '@sveltejs/kit'
 
-export async function load() {
+export const load: Load = async () => {
     return {
-        foo: 'bar',
-        thing1: await supabase.from('dispensary').select('*'),
+        dispensariesQuery: await supabase.from('dispensary').select('*'),
     }
 }
