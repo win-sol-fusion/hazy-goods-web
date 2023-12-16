@@ -1,14 +1,6 @@
 import supabase from "$lib/supabase/client";
 
 export const actions = {
-<<<<<<< HEAD
-    create: async ({ request }) => {
-        const data = await request.formData()
-        const formName = data.get('name')
-        return { success: true, name: formName }
-    },
-}
-=======
   create: async ({ request }) => {
     try {
       const data = await request.formData();
@@ -40,4 +32,3 @@ export const actions = {
     }
   },
 };
->>>>>>> 0348265 (Added dispensary form functionality)
