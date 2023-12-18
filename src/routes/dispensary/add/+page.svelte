@@ -1,25 +1,23 @@
 <script lang="ts">
     export let form
     export let data
-    let selectedStateId: any = null
+    let selectedStateId: string = ''
 
     function handleSelectState(event: any) {
         event.preventDefault()
         const value = event.target.value
-        selectedStateId = value === '' ? null : parseInt(value, 10)
+        selectedStateId = value === '' ? null : value
         console.log('Selected State ID1:', selectedStateId)
     }
 
     function handleSubmit(event: Event) {
         event.preventDefault()
-        console.log('Form Submitted')
 
         if (selectedStateId !== null) {
-            console.log('Selected State ID2:', selectedStateId)
             const formData = new FormData(
                 event.currentTarget as HTMLFormElement
             )
-            formData.set('region_id', selectedStateId.toString()) 
+            formData.set('state', selectedStateId.toString()) 
             fetch('?/create', {
                 method: 'POST',
                 body: formData,
@@ -54,6 +52,7 @@
     <label for="selectedStates">
         State
         <select
+            name="state"
             id="selectedStates"
             bind:value={selectedStateId}
             on:change={handleSelectState}

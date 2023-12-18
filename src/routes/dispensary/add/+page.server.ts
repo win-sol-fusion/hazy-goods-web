@@ -23,9 +23,12 @@ export const actions = {
                         created_by: '22222222-2222-2222-2222-222222222222', // placeholder user id
                     },
                 ])
-                if(error) {
-                  console.error("Error inserting date into supabase:", error.message)
-                }
+            if (error) {
+                console.error(
+                    'Error inserting date into supabase:',
+                    error.message
+                )
+            }
             return { success: true, data: insertData }
         } catch (error: any) {
             console.error('Error processing form submission:', error.message)
