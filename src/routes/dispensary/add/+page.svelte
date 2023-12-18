@@ -17,7 +17,7 @@
             const formData = new FormData(
                 event.currentTarget as HTMLFormElement
             )
-            formData.set('state', selectedStateId.toString()) 
+            formData.set('state', selectedStateId.toString())
             fetch('?/create', {
                 method: 'POST',
                 body: formData,
@@ -52,14 +52,12 @@
     <label for="selectedStates">
         State
         <select
-            name="state"
             id="selectedStates"
-            bind:value={selectedStateId}
             on:change={handleSelectState}
         >
-            <option value="">Select a state</option>
+        <option value="" selected={!selectedStateId}>Select a state</option>
             {#each data.states as state (state.id)}
-                <option value={state.id}>{state.name}</option>
+                <option value={state.id} selected={state.id === selectedStateId}>{state.name}</option>
             {/each}
         </select>
     </label>
