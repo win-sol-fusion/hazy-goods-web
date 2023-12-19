@@ -1,6 +1,7 @@
 <script lang="ts">
     import { Icon } from '@steeze-ui/svelte-icon'
     import { MagnifyingGlass } from '@steeze-ui/heroicons'
+    import FirstComponent from '$lib/components/first-component/first-component.svelte'
 
     export let data
 </script>
@@ -16,7 +17,11 @@
 {#each data.dispensariesQuery.data || [] as dispensary}
     <div class="card">
         <header class="card-header">
-            {dispensary.name}
+            <FirstComponent
+                inputName="Title"
+                firstName={dispensary.name}
+                errorMessage={dispensary.city}
+            />
         </header>
         <section class="p-4">
             <p>{dispensary.address_1}</p>
