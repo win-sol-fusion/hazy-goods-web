@@ -9,7 +9,8 @@ const config = {
   "addons": [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
-    "@storybook/addon-interactions"
+    "@storybook/addon-interactions",
+    "@storybook/addon-styling-webpack"
   ],
   "framework": {
     "name": "@storybook/sveltekit",
