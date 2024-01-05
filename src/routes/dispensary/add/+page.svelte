@@ -1,7 +1,9 @@
 <script lang="ts">
+    import NameFormComponent from '$lib/components/form-components/name-form-component.svelte'
     export let form
     export let data
     let selectedStateId: string = ''
+    let nameErrors: string[] = []
 
     function handleSelectState(event: any) {
         event.preventDefault()
@@ -14,21 +16,27 @@
         event.preventDefault()
 
         if (selectedStateId !== null) {
-            const formData = new FormData(
-                event.currentTarget as HTMLFormElement
-            )
-            formData.set('state', selectedStateId.toString())
-            fetch('?/create', {
-                method: 'POST',
-                body: formData,
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log('Data inserted successfully:', data)
+            if (nameErrors.length === 0) {
+                const formData = new FormData(
+                    event.currentTarget as HTMLFormElement
+                )
+                formData.set('state', selectedStateId.toString())
+                fetch('?/create', {
+                    method: 'POST',
+                    body: formData,
                 })
-                .catch((error) => {
-                    console.error('Error inserting data:', error)
-                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log('Data inserted successfully:', data)
+                    })
+                    .catch((error) => {
+                        console.error('Error inserting data:', error)
+                    })
+            } else {
+                console.error(
+                    'Name has errors. Please fix them before submitting.'
+                )
+            }
         } else {
             console.error('No state selected')
         }
@@ -37,10 +45,13 @@
 
 <h1>Add Dispensary</h1>
 <form on:submit={handleSubmit}>
-    <label>
-        Dispensary Name
-        <input name="name" type="input" />
-    </label>
+    <NameFormComponent
+        labelName="Dispensary Name"
+        inputName="name"
+        placeholderName="Enter a dispensary name"
+        on:inputError={(event) => (nameErrors = event.detail.nameErrors)}
+    />
+
     <label>
         Address
         <input name="address" type="input" />
@@ -51,13 +62,12 @@
     </label>
     <label for="selectedStates">
         State
-        <select
-            id="selectedStates"
-            on:change={handleSelectState}
-        >
-        <option value="" selected={!selectedStateId}>Select a state</option>
+        <select id="selectedStates" on:change={handleSelectState}>
+            <option value="" selected={!selectedStateId}>Select a state</option>
             {#each data.states as state (state.id)}
-                <option value={state.id} selected={state.id === selectedStateId}>{state.name}</option>
+                <option value={state.id} selected={state.id === selectedStateId}
+                    >{state.name}</option
+                >
             {/each}
         </select>
     </label>
