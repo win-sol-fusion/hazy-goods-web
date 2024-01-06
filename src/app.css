@@ -1,4 +1,15 @@
+/* Write your global styles here, in PostCSS syntax */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    :root {
+      --color-primary: rgb(255 115 179);
+    }
+}
+
+html,
+body {
+    @apply h-full overflow-hidden;
+}

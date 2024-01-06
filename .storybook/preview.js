@@ -1,4 +1,6 @@
 import '../src/app.css'
+import { withThemeByClassName } from '@storybook/addon-themes'
+import ThemeDecorator from './theme-decorator.svelte'
 
 /** @type { import('@storybook/svelte').Preview } */
 const preview = {
@@ -11,6 +13,16 @@ const preview = {
             },
         },
     },
+    decorators: [
+        () => ThemeDecorator,
+        withThemeByClassName({
+            themes: {
+                light: '',
+                dark: 'dark',
+            },
+            defaultTheme: 'light',
+        }),
+    ],
 }
 
 export default preview

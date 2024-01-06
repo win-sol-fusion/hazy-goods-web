@@ -8,6 +8,7 @@ const config = {
     darkMode: 'class',
     content: [
         './src/**/*.{html,js,svelte,ts}',
+        './.storybook/**/*.{html,js,svelte,ts}',
         // 3. Append the path to the Skeleton package
         join(
             require.resolve('@skeletonlabs/skeleton'),
@@ -15,6 +16,7 @@ const config = {
         ),
     ],
     theme: {
+        colors: {},
         extend: {},
     },
     plugins: [
