@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { applyAction, enhance } from '$app/forms'
-    import { goto } from '$app/navigation'
+    import { enhance } from '$app/forms'
+    import { page } from '$app/stores'
     import TextInput from '$lib/components/text-input/text-input.svelte'
     import type { SubmitFunction } from '@sveltejs/kit'
     import { validate } from 'validate.js'
@@ -32,6 +32,7 @@
     }
 
     export let form
+    export let status = $page.status
     export let data
 
     // export let formData: DispensaryFormData = {}
@@ -83,6 +84,11 @@
         } else {
             // clear form validation errors
             formValidationErrors = {}
+        }
+
+        return ({ result, update }) => {
+            update()
+            selectedStateId = ''
         }
     }
 
@@ -140,13 +146,20 @@
         validationErrors={formValidationErrors.zip}
     />
 
-    <button type="submit">Save</button>
+    <button
+        type="submit"
+        class="btn bg-gradient-to-br variant-gradient-primary-secondary mt-10"
+        >Save</button
+    >
 </form>
 
-<h1>
+<h1 class="mt-10">
     Results
-    {#if form?.success}
-        ✅
+    {#if status === 200}
+        ✅ {status}
+    {/if}
+    {#if status !== 200}
+        😵 {status}
     {/if}
 </h1>
 <pre>{JSON.stringify(form, null, 2)}</pre>
