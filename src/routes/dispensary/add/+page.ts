@@ -18,7 +18,7 @@ interface PostgrestStateResponse {
 
 export async function load(): Promise<{ states: StateData[] }> {
     const response = (await supabase
-        .from<StateData>('region')
+        .from('region') // .from<StateData>('region')
         .select('*')) as PostgrestSingleResponse<StateData[]>
 
     if (response.error) {
