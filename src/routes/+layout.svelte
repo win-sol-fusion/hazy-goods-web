@@ -1,5 +1,5 @@
 <script lang="ts">
-    import '../app.pcss'
+    import '../app.css'
     import { AppBar, AppShell } from '@skeletonlabs/skeleton'
     import type { AfterNavigate } from '@sveltejs/kit'
     import { afterNavigate } from '$app/navigation'

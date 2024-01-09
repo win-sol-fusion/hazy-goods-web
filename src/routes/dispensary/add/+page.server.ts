@@ -7,7 +7,7 @@ export const actions = {
             const formName = data.get('name')
             const formAddress = data.get('address')
             const formCity = data.get('city')
-            const formState = data.get('state')
+            const formState = data.get('region_id')
             const formZip = data.get('zip')
 
             const { data: insertData, error } = await supabase
@@ -23,17 +23,16 @@ export const actions = {
                         created_by: '22222222-2222-2222-2222-222222222222', // placeholder user id
                     },
                 ])
-                if(error) {
-                    throw error
-                }
-            return {success: true}
+            if (error) {
+                throw error
+            }
+            return { success: true }
         } catch (error: any) {
             console.error(error)
             return {
                 success: false,
+                message: error.message,
             }
         }
     },
 }
-
-

@@ -1,89 +1,171 @@
 <script lang="ts">
-    import NameFormComponent from '$lib/components/form-components/name-form-component.svelte'
-    export let form
-    export let data
-    let selectedStateId: string = ''
-    let nameErrors: string[] = []
+    import { enhance } from '$app/forms'
+    import { page } from '$app/stores'
+    import TextInput from '$lib/components/text-input/text-input.svelte'
+    import type { SubmitFunction } from '@sveltejs/kit'
+    import { validate } from 'validate.js'
 
-    function handleSelectState(event: any) {
-        event.preventDefault()
-        const value = event.target.value
-        selectedStateId = value === '' ? null : value
-        console.log('Selected State ID1:', selectedStateId)
+    interface DispensaryFormData {
+        name?: string
+        address?: string
+        city?: string
+        region_id?: number
+        zip?: string
     }
+
+    const dispensaryFormDataValidations = {
+        name: {
+            presence: {
+                allowEmpty: false,
+                message: 'is really important to have',
+            },
+        },
+        address: {
+            presence: { allowEmpty: false },
+        },
+        city: {
+            presence: { allowEmpty: false },
+        },
+        region_id: {
+            presence: { allowEmpty: false },
+        },
+        zip: {
+            presence: { allowEmpty: false },
+        },
+    }
+
+    export let form
+    export let status = $page.status
+    export let data
+
+    // export let formData: DispensaryFormData = {}
+    let formElement: HTMLFormElement | undefined
+
+    let selectedStateId: string = ''
+    let formValidationErrors: Partial<Record<string, string[]>> = {}
+
+    // function handleSelectState(event: any) {
+    //     event.preventDefault()
+    //     const value = event.target.value
+    //     formData.region_id = value === '' ? null : value
+    // }
 
     function handleSubmit(event: Event) {
         event.preventDefault()
+        // formValidationErrors = validate(formData, dispensaryFormDataValidations)
+        fetch('?/create', {
+            method: 'POST',
+            headers: {
+                // 'Content-Type': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new FormData(formElement),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log('Data inserted successfully:', data)
+            })
+            .catch((error) => {
+                console.error('Error inserting data:', error)
+            })
+    }
 
-        if (selectedStateId !== null) {
-            if (nameErrors.length === 0) {
-                const formData = new FormData(
-                    event.currentTarget as HTMLFormElement
-                )
-                formData.set('state', selectedStateId.toString())
-                fetch('?/create', {
-                    method: 'POST',
-                    body: formData,
-                })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        console.log('Data inserted successfully:', data)
-                    })
-                    .catch((error) => {
-                        console.error('Error inserting data:', error)
-                    })
-            } else {
-                console.error(
-                    'Name has errors. Please fix them before submitting.'
-                )
-            }
+    const submitEnhancer: SubmitFunction = ({
+        formElement,
+        formData,
+        action,
+        cancel,
+        submitter,
+    }) => {
+        const validationErrors = validate(
+            Object.fromEntries(formData),
+            dispensaryFormDataValidations
+        )
+        if (validationErrors) {
+            formValidationErrors = validationErrors
+            cancel()
         } else {
-            console.error('No state selected')
+            // clear form validation errors
+            formValidationErrors = {}
+        }
+
+        return ({ result, update }) => {
+            update()
+            selectedStateId = ''
         }
     }
+
+    // let currentFormData: DispensaryFormData
+    // $: currentFormData = Object.fromEntries(new FormData(formElement))
 </script>
 
 <h1>Add Dispensary</h1>
-<form on:submit={handleSubmit}>
-    <NameFormComponent
-        labelName="Dispensary Name"
-        inputName="name"
-        placeholderName="Enter a dispensary name"
-        on:inputError={(event) => (nameErrors = event.detail.nameErrors)}
+<form
+    method="POST"
+    action="?/create"
+    use:enhance={submitEnhancer}
+    bind:this={formElement}
+>
+    <!-- bind:value={formData.name} -->
+    <TextInput
+        label="Dispensary Name"
+        name="name"
+        placeholder="Enter a dispensary name"
+        validationErrors={formValidationErrors.name}
     />
-
-    <label>
-        Address
-        <input name="address" type="input" />
-    </label>
-    <label>
-        City
-        <input name="city" type="input" />
-    </label>
+    <!-- bind:value={formData.address} -->
+    <TextInput
+        label="Address"
+        name="address"
+        placeholder="Street Address"
+        validationErrors={formValidationErrors.address}
+    />
+    <!-- bind:value={formData.city} -->
+    <TextInput
+        label="City"
+        name="city"
+        placeholder="City"
+        validationErrors={formValidationErrors.city}
+    />
     <label for="selectedStates">
         State
-        <select id="selectedStates" on:change={handleSelectState}>
+        <!-- on:change={handleSelectState} -->
+        <select
+            id="selectedStates"
+            name="region_id"
+            bind:value={selectedStateId}
+        >
             <option value="" selected={!selectedStateId}>Select a state</option>
             {#each data.states as state (state.id)}
-                <option value={state.id} selected={state.id === selectedStateId}
-                    >{state.name}</option
-                >
+                <option value={state.id}>{state.name}</option>
             {/each}
         </select>
     </label>
-    <label>
-        Zip Code
-        <input name="zip" type="input" />
-    </label>
+    <!-- bind:value={formData.zip} -->
+    <TextInput
+        label="Zip Code"
+        name="zip"
+        placeholder="Zip Code"
+        validationErrors={formValidationErrors.zip}
+    />
 
-    <button type="submit">Save</button>
+    <button
+        type="submit"
+        class="btn bg-gradient-to-br variant-gradient-primary-secondary mt-10"
+        >Save</button
+    >
 </form>
 
-<h1>
+<h1 class="mt-10">
     Results
-    {#if form?.success}
-        ✅
+    {#if status === 200}
+        ✅ {status}
+    {/if}
+    {#if status !== 200}
+        😵 {status}
     {/if}
 </h1>
-
 <pre>{JSON.stringify(form, null, 2)}</pre>
+
+<!-- <h1>Current Form</h1>
+<pre>{JSON.stringify(currentFormData, null, 2)}</pre> -->
