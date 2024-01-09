@@ -2,7 +2,6 @@ import supabase from '$lib/supabase/client'
 
 export const actions = {
     create: async ({ request }) => {
-        console.log('making create request')
         try {
             const data = await request.formData()
             const formName = data.get('name')

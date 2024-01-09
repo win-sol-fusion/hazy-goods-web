@@ -15,7 +15,10 @@
 
     const dispensaryFormDataValidations = {
         name: {
-            presence: { allowEmpty: false },
+            presence: {
+                allowEmpty: false,
+                message: 'is really important to have',
+            },
         },
         address: {
             presence: { allowEmpty: false },

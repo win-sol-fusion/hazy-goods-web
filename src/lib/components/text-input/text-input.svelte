@@ -35,11 +35,9 @@
             on:blur
         />
     </label>
-    <div class="">
-        {#if validationErrors && validationErrors.length > 0}
-            {#each validationErrors as error (error)}
-                <p class="font-light text-sm text-error-500 italic">{error}</p>
-            {/each}
-        {/if}
-    </div>
+    {#if validationErrors && validationErrors.length > 0}
+        {#each validationErrors as error (error)}
+            <p class="font-light text-sm text-error-500 italic">{error}</p>
+        {/each}
+    {/if}
 </div>
