@@ -33,6 +33,10 @@
     <button class="variant-filled-secondary">Search</button>
 </div>
 {#each dispensaries as dispensary}
-    <DispensaryCard {dispensary} />
+    <DispensaryCard class="m-8" {dispensary} />
 {/each}
-<Paginator bind:settings={paginationSettings} controlVariant="variant-ghost" />
+<Paginator
+    class="ml-8 mr-8"
+    bind:settings={paginationSettings}
+    controlVariant="variant-ghost"
+/>

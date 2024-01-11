@@ -10,9 +10,11 @@
     }
 
     export let dispensary: Dispensary
+    let className: string
+    export { className as class }
 </script>
 
-<div class="card">
+<div class={`card ${className}`}>
     <header class="card-header">
         <FirstComponent
             inputName="Title"
