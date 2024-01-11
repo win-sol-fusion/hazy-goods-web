@@ -26,37 +26,38 @@
         <AppBar>Hazy Goods</AppBar>
     </svelte:fragment>
 
-    <AppRail>
-        <svelte:fragment slot="lead">
-            <AppRailAnchor href="/">
-                <div class="ml-7">
-                    <Icon
-                        src={BuildingStorefront}
-                        size="20px"
-                        theme="outline"
-                    />
-                </div>
-                Home</AppRailAnchor
-            >
-            <AppRailAnchor href="/dispensary">
-                <div class="ml-7">
-                    <Icon
-                        src={ClipboardDocumentList}
-                        size="20px"
-                        theme="outline"
-                    />
-                </div>
-                Dispensary List</AppRailAnchor
-            >
-            <AppRailAnchor href="/dispensary/add">
-                <div class="ml-7">
-                    <Icon src={PlusCircle} size="20px" theme="outline" />
-                </div>
-                Add New Dispensary</AppRailAnchor
-            >
-        </svelte:fragment>
-    </AppRail>
-    <main>
-        <slot />
-    </main>
+    <svelte:fragment slot="sidebarLeft">
+        <AppRail>
+            <svelte:fragment slot="lead">
+                <AppRailAnchor href="/">
+                    <div class="ml-7">
+                        <Icon
+                            src={BuildingStorefront}
+                            size="20px"
+                            theme="outline"
+                        />
+                    </div>
+                    Home
+                </AppRailAnchor>
+                <AppRailAnchor href="/dispensary">
+                    <div class="ml-7">
+                        <Icon
+                            src={ClipboardDocumentList}
+                            size="20px"
+                            theme="outline"
+                        />
+                    </div>
+                    Dispensary List
+                </AppRailAnchor>
+                <AppRailAnchor href="/dispensary/add">
+                    <div class="ml-7">
+                        <Icon src={PlusCircle} size="20px" theme="outline" />
+                    </div>
+                    Add New Dispensary
+                </AppRailAnchor>
+            </svelte:fragment>
+        </AppRail>
+    </svelte:fragment>
+
+    <slot />
 </AppShell>
